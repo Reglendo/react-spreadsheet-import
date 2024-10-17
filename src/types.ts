@@ -49,6 +49,11 @@ export type RsiProps<T extends string> = {
   parseRaw?: boolean
   // Use for right-to-left (RTL) support
   rtl?: boolean
+  // CUSTOM props for PF
+  // Turn off toast which comes up when changing and already selected column while matching
+  disableExistingFieldsToast?: boolean
+  // Tunr off validation of missing matched columns
+  disableUnmatchedFieldsAlert?: boolean
 }
 
 export type RawData = Array<string | undefined>

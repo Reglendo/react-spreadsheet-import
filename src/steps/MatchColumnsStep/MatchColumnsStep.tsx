@@ -71,7 +71,8 @@ export const MatchColumnsStep = <T extends string>({
 }: MatchColumnsProps<T>) => {
   const toast = useToast()
   const dataExample = data.slice(0, 2)
-  const { fields, autoMapHeaders, autoMapSelectValues, autoMapDistance, translations } = useRsi<T>()
+  // eslint-disable-next-line prettier/prettier
+  const { fields, autoMapHeaders, autoMapSelectValues, autoMapDistance, translations, disableExistingFieldsToast, disableUnmatchedFieldsAlert } = useRsi<T>()
   const [isLoading, setIsLoading] = useState(false)
   const [columns, setColumns] = useState<Columns<T>>(
     // Do not remove spread, it indexes empty array elements, otherwise map() skips over them
@@ -89,14 +90,16 @@ export const MatchColumnsStep = <T extends string>({
           if (columnIndex === index) {
             return setColumn(column, field, data, autoMapSelectValues)
           } else if (index === existingFieldIndex) {
-            toast({
-              status: "warning",
-              variant: "left-accent",
-              position: "bottom-left",
-              title: translations.matchColumnsStep.duplicateColumnWarningTitle,
-              description: translations.matchColumnsStep.duplicateColumnWarningDescription,
-              isClosable: true,
-            })
+            if (!disableExistingFieldsToast) {
+              toast({
+                status: "warning",
+                variant: "left-accent",
+                position: "bottom-left",
+                title: translations.matchColumnsStep.duplicateColumnWarningTitle,
+                description: translations.matchColumnsStep.duplicateColumnWarningDescription,
+                isClosable: true,
+              })
+            }
             return setColumn(column)
           } else {
             return column
@@ -110,6 +113,7 @@ export const MatchColumnsStep = <T extends string>({
       data,
       fields,
       toast,
+      disableExistingFieldsToast,
       translations.matchColumnsStep.duplicateColumnWarningDescription,
       translations.matchColumnsStep.duplicateColumnWarningTitle,
     ],
@@ -142,14 +146,14 @@ export const MatchColumnsStep = <T extends string>({
   const unmatchedRequiredFields = useMemo(() => findUnmatchedRequiredFields(fields, columns), [fields, columns])
 
   const handleOnContinue = useCallback(async () => {
-    if (unmatchedRequiredFields.length > 0) {
+    if (unmatchedRequiredFields.length > 0 && !disableUnmatchedFieldsAlert) {
       setShowUnmatchedFieldsAlert(true)
     } else {
       setIsLoading(true)
       await onContinue(normalizeTableData(columns, data, fields), data, columns)
       setIsLoading(false)
     }
-  }, [unmatchedRequiredFields.length, onContinue, columns, data, fields])
+  }, [unmatchedRequiredFields.length, onContinue, columns, data, fields, disableUnmatchedFieldsAlert])
 
   const handleAlertOnContinue = useCallback(async () => {
     setShowUnmatchedFieldsAlert(false)
