@@ -71,8 +71,15 @@ export const MatchColumnsStep = <T extends string>({
 }: MatchColumnsProps<T>) => {
   const toast = useToast()
   const dataExample = data.slice(0, 2)
-  // eslint-disable-next-line prettier/prettier
-  const { fields, autoMapHeaders, autoMapSelectValues, autoMapDistance, translations, disableExistingFieldsToast, disableUnmatchedFieldsAlert } = useRsi<T>()
+  const {
+    fields,
+    autoMapHeaders,
+    autoMapSelectValues,
+    autoMapDistance,
+    translations,
+    disableExistingFieldsToast,
+    disableUnmatchedFieldsAlert,
+  } = useRsi<T>()
   const [isLoading, setIsLoading] = useState(false)
   const [columns, setColumns] = useState<Columns<T>>(
     // Do not remove spread, it indexes empty array elements, otherwise map() skips over them
@@ -117,6 +124,17 @@ export const MatchColumnsStep = <T extends string>({
       translations.matchColumnsStep.duplicateColumnWarningDescription,
       translations.matchColumnsStep.duplicateColumnWarningTitle,
     ],
+  )
+
+  const onClearSelection = useCallback(
+    (columnIndex: number) => {
+      setColumns(
+        columns.map((column, index) => {
+          return columnIndex === index ? setColumn(column) : column
+        }),
+      )
+    },
+    [columns],
   )
 
   const onIgnore = useCallback(
@@ -193,7 +211,9 @@ export const MatchColumnsStep = <T extends string>({
             entries={dataExample.map((row) => row[column.index])}
           />
         )}
-        templateColumn={(column) => <TemplateColumn column={column} onChange={onChange} onSubChange={onSubChange} />}
+        templateColumn={(column) => (
+          <TemplateColumn column={column} onChange={onChange} onSubChange={onSubChange} onClear={onClearSelection} />
+        )}
       />
     </>
   )

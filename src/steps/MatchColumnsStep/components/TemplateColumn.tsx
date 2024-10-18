@@ -13,6 +13,7 @@ import { useRsi } from "../../../hooks/useRsi"
 import type { Column } from "../MatchColumnsStep"
 import { ColumnType } from "../MatchColumnsStep"
 import { MatchIcon } from "./MatchIcon"
+import { ClearButton } from "./ClearButton"
 import type { Fields } from "../../../types"
 import type { Translations } from "../../../translationsRSIProps"
 import { MatchColumnSelect } from "../../../components/Selects/MatchColumnSelect"
@@ -29,10 +30,16 @@ const getAccordionTitle = <T extends string>(fields: Fields<T>, column: Column<T
 type TemplateColumnProps<T extends string> = {
   onChange: (val: T, index: number) => void
   onSubChange: (val: T, index: number, option: string) => void
+  onClear: (index: number) => void
   column: Column<T>
 }
 
-export const TemplateColumn = <T extends string>({ column, onChange, onSubChange }: TemplateColumnProps<T>) => {
+export const TemplateColumn = <T extends string>({
+  column,
+  onChange,
+  onSubChange,
+  onClear,
+}: TemplateColumnProps<T>) => {
   const { translations, fields } = useRsi<T>()
   const styles = useStyleConfig("MatchColumnsStep") as Styles
   const isIgnored = column.type === ColumnType.ignored
@@ -60,6 +67,7 @@ export const TemplateColumn = <T extends string>({ column, onChange, onSubChange
                 name={column.header}
               />
             </Box>
+            {selectValue && <ClearButton onClear={() => onClear(column.index)} />}
             <MatchIcon isChecked={isChecked} />
           </Flex>
           {isSelect && (
