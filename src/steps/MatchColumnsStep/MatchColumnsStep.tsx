@@ -77,15 +77,42 @@ export const MatchColumnsStep = <T extends string>({
     autoMapSelectValues,
     autoMapDistance,
     translations,
+    // custom fields for PF
     disableExistingFieldsToast,
     disableUnmatchedFieldsAlert,
+    pairingElementField,
+    referencePriceFields,
   } = useRsi<T>()
   const [isLoading, setIsLoading] = useState(false)
   const [columns, setColumns] = useState<Columns<T>>(
     // Do not remove spread, it indexes empty array elements, otherwise map() skips over them
-    ([...headerValues] as string[]).map((value, index) => ({ type: ColumnType.empty, index, header: value ?? "" })),
+    // @ts-expect-error the below type incompatibility error must be ignored for PF purposes
+    ([...headerValues] as string[]).map((headerName, headerIndex) => {
+      // custom code specifically for PF
+      if (pairingElementField && pairingElementField.pairingElementIndex === headerIndex) {
+        return {
+          type: ColumnType.matched,
+          index: headerIndex,
+          header: headerName ?? "",
+          value: pairingElementField.key,
+        }
+      }
+      if (referencePriceFields && referencePriceFields.indices.includes(headerIndex)) {
+        const indexOfRefPrice = referencePriceFields.indices.indexOf(headerIndex)
+        return {
+          type: ColumnType.matched,
+          index: headerIndex,
+          header: headerName ?? "",
+          value: `${referencePriceFields.key}${indexOfRefPrice + 1}`,
+        }
+      }
+      // ^^^^^^^^ custom code specifically for PF ^^^^^^^^
+      return { type: ColumnType.empty, index: headerIndex, header: headerName ?? "" }
+    }),
   )
   const [showUnmatchedFieldsAlert, setShowUnmatchedFieldsAlert] = useState(false)
+
+  console.log("columns", columns, "fields", fields)
 
   const onChange = useCallback(
     (value: T, columnIndex: number) => {

@@ -52,8 +52,18 @@ export type RsiProps<T extends string> = {
   // CUSTOM props for PF
   // Turn off toast which comes up when changing and already selected column while matching
   disableExistingFieldsToast?: boolean
-  // Tunr off validation of missing matched columns
+  // Turn off validation of missing matched columns
   disableUnmatchedFieldsAlert?: boolean
+  // Inject saved info of which field contains the pairing element from the keychain to RSI
+  pairingElementField?: {
+    key: T
+    pairingElementIndex: number
+  }
+  // Inject saved info of which field contains the reference price elements from the keychain to RSI
+  referencePriceFields?: {
+    key: T
+    indices: number[]
+  }
 }
 
 export type RawData = Array<string | undefined>
