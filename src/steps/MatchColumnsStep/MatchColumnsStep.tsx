@@ -80,13 +80,13 @@ export const MatchColumnsStep = <T extends string>({
     // custom fields for PF
     disableExistingFieldsToast,
     disableUnmatchedFieldsAlert,
+    specialPfMatchingMode,
     pairingElementField,
     referencePriceFields,
   } = useRsi<T>()
   const [isLoading, setIsLoading] = useState(false)
   const [columns, setColumns] = useState<Columns<T>>(
     // Do not remove spread, it indexes empty array elements, otherwise map() skips over them
-    // @ts-expect-error the below type incompatibility error must be ignored for PF purposes
     ([...headerValues] as string[]).map((headerName, headerIndex) => {
       // custom code specifically for PF
       if (pairingElementField && pairingElementField.pairingElementIndex === headerIndex) {
@@ -98,12 +98,11 @@ export const MatchColumnsStep = <T extends string>({
         }
       }
       if (referencePriceFields && referencePriceFields.indices.includes(headerIndex)) {
-        const indexOfRefPrice = referencePriceFields.indices.indexOf(headerIndex)
         return {
           type: ColumnType.matched,
           index: headerIndex,
           header: headerName ?? "",
-          value: `${referencePriceFields.key}${indexOfRefPrice + 1}`,
+          value: referencePriceFields.key,
         }
       }
       // ^^^^^^^^ custom code specifically for PF ^^^^^^^^
@@ -134,6 +133,9 @@ export const MatchColumnsStep = <T extends string>({
                 isClosable: true,
               })
             }
+            if (specialPfMatchingMode) {
+              return column
+            }
             return setColumn(column)
           } else {
             return column
@@ -148,6 +150,7 @@ export const MatchColumnsStep = <T extends string>({
       fields,
       toast,
       disableExistingFieldsToast,
+      specialPfMatchingMode,
       translations.matchColumnsStep.duplicateColumnWarningDescription,
       translations.matchColumnsStep.duplicateColumnWarningTitle,
     ],

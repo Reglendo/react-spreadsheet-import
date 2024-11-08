@@ -40,7 +40,7 @@ export const TemplateColumn = <T extends string>({
   onSubChange,
   onClear,
 }: TemplateColumnProps<T>) => {
-  const { translations, fields } = useRsi<T>()
+  const { translations, fields, specialPfMatchingMode } = useRsi<T>()
   const styles = useStyleConfig("MatchColumnsStep") as Styles
   const isIgnored = column.type === ColumnType.ignored
   const isChecked =
@@ -50,6 +50,7 @@ export const TemplateColumn = <T extends string>({
   const isSelect = "matchedOptions" in column
   const selectOptions = fields.map(({ label, key }) => ({ value: key, label }))
   const selectValue = selectOptions.find(({ value }) => "value" in column && column.value === value)
+  console.log("isSlect", isSelect, "selectValue", selectValue)
 
   return (
     <Flex minH={10} w="100%" flexDir="column" justifyContent="center">
@@ -70,7 +71,7 @@ export const TemplateColumn = <T extends string>({
             {selectValue && <ClearButton onClear={() => onClear(column.index)} />}
             <MatchIcon isChecked={isChecked} />
           </Flex>
-          {isSelect && (
+          {isSelect && !specialPfMatchingMode && (
             <Flex width="100%">
               <Accordion allowMultiple width="100%">
                 <AccordionItem border="none" py={1}>

@@ -24,8 +24,9 @@ export const defaultRSIProps: Partial<RsiProps<any>> = {
   // CUSTOM props for PF
   disableExistingFieldsToast: false,
   disableUnmatchedFieldsAlert: false,
-  pairingElementField: undefined,
-  referencePriceFields: undefined,
+  specialPfMatchingMode: false,
+  pairingElementField: null,
+  referencePriceFields: null,
 } as const
 
 export const ReactSpreadsheetImport = <T extends string>(props: RsiProps<T>) => {

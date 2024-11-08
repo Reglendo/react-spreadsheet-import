@@ -5,6 +5,7 @@ import { ColumnType } from "../MatchColumnsStep"
 import { dataAttr } from "@chakra-ui/utils"
 import type { Styles } from "./ColumnGrid"
 import type { RawData } from "../../../types"
+import { useRsi } from "../../../hooks/useRsi"
 
 type UserTableColumnProps<T extends string> = {
   column: Column<T>
@@ -15,6 +16,7 @@ type UserTableColumnProps<T extends string> = {
 
 export const UserTableColumn = <T extends string>(props: UserTableColumnProps<T>) => {
   const styles = useStyleConfig("MatchColumnsStep") as Styles
+  const { translations } = useRsi<T>()
   const {
     column: { header, index, type },
     entries,
@@ -26,7 +28,7 @@ export const UserTableColumn = <T extends string>(props: UserTableColumnProps<T>
     <Box>
       <Flex px={6} justifyContent="space-between" alignItems="center" mb={4}>
         <Text sx={styles.userTable.header} data-ignored={dataAttr(isIgnored)}>
-          {header}
+          {`${header} (${translations.matchColumnsStep.shortForColumn} ${index + 1})`}
         </Text>
         {type === ColumnType.ignored ? (
           <IconButton

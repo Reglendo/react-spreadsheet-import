@@ -54,16 +54,18 @@ export type RsiProps<T extends string> = {
   disableExistingFieldsToast?: boolean
   // Turn off validation of missing matched columns
   disableUnmatchedFieldsAlert?: boolean
+  // Enable matching multiple reference price fields to columns
+  specialPfMatchingMode?: boolean
   // Inject saved info of which field contains the pairing element from the keychain to RSI
   pairingElementField?: {
     key: T
     pairingElementIndex: number
-  }
+  } | null
   // Inject saved info of which field contains the reference price elements from the keychain to RSI
   referencePriceFields?: {
     key: T
     indices: number[]
-  }
+  } | null
 }
 
 export type RawData = Array<string | undefined>
