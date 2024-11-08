@@ -26,6 +26,7 @@ export const defaultRSIProps: Partial<RsiProps<any>> = {
   disableUnmatchedFieldsAlert: false,
   specialPfMatchingMode: false,
   userTableRowNumber: undefined,
+  userTableGridRows: undefined,
   pairingElementField: null,
   referencePriceFields: null,
 } as const
