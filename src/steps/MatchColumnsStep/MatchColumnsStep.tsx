@@ -70,7 +70,6 @@ export const MatchColumnsStep = <T extends string>({
   onBack,
 }: MatchColumnsProps<T>) => {
   const toast = useToast()
-  const dataExample = data.slice(0, 3)
   const {
     fields,
     autoMapHeaders,
@@ -81,9 +80,12 @@ export const MatchColumnsStep = <T extends string>({
     disableExistingFieldsToast,
     disableUnmatchedFieldsAlert,
     specialPfMatchingMode,
+    userTableRowNumber,
     pairingElementField,
     referencePriceFields,
   } = useRsi<T>()
+  const exampleRows = userTableRowNumber ?? 2
+  const dataExample = data.slice(0, exampleRows)
   const [isLoading, setIsLoading] = useState(false)
   const [columns, setColumns] = useState<Columns<T>>(
     // Do not remove spread, it indexes empty array elements, otherwise map() skips over them

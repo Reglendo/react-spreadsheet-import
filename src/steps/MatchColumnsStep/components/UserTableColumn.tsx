@@ -26,7 +26,7 @@ export const UserTableColumn = <T extends string>(props: UserTableColumnProps<T>
   const isIgnored = type === ColumnType.ignored
   return (
     <Box>
-      <Flex px={6} justifyContent="space-between" alignItems="center" mb={4}>
+      <Flex px={4} justifyContent="space-between" alignItems="center" mb={4}>
         <Text sx={styles.userTable.header} data-ignored={dataAttr(isIgnored)}>
           {`${header} (${translations.matchColumnsStep.shortForColumn} ${index + 1})`}
         </Text>

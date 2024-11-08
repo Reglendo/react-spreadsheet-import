@@ -56,6 +56,8 @@ export type RsiProps<T extends string> = {
   disableUnmatchedFieldsAlert?: boolean
   // Enable matching multiple reference price fields to columns
   specialPfMatchingMode?: boolean
+  // Specify how many rows of the data example should be shown in the user (top) table
+  userTableRowNumber?: number
   // Inject saved info of which field contains the pairing element from the keychain to RSI
   pairingElementField?: {
     key: T
