@@ -70,7 +70,7 @@ export const MatchColumnsStep = <T extends string>({
   onBack,
 }: MatchColumnsProps<T>) => {
   const toast = useToast()
-  const dataExample = data.slice(0, 2)
+  const dataExample = data.slice(0, 3)
   const {
     fields,
     autoMapHeaders,
@@ -110,8 +110,6 @@ export const MatchColumnsStep = <T extends string>({
     }),
   )
   const [showUnmatchedFieldsAlert, setShowUnmatchedFieldsAlert] = useState(false)
-
-  console.log("columns", columns, "fields", fields)
 
   const onChange = useCallback(
     (value: T, columnIndex: number) => {

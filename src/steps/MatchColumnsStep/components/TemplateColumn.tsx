@@ -50,7 +50,6 @@ export const TemplateColumn = <T extends string>({
   const isSelect = "matchedOptions" in column
   const selectOptions = fields.map(({ label, key }) => ({ value: key, label }))
   const selectValue = selectOptions.find(({ value }) => "value" in column && column.value === value)
-  console.log("isSlect", isSelect, "selectValue", selectValue)
 
   return (
     <Flex minH={10} w="100%" flexDir="column" justifyContent="center">

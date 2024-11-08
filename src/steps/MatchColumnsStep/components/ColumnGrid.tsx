@@ -25,7 +25,7 @@ export const ColumnGrid = <T extends string>({
   onBack,
   isLoading,
 }: ColumnGridProps<T>) => {
-  const { translations } = useRsi()
+  const { translations, specialPfMatchingMode } = useRsi()
   const styles = useStyleConfig("MatchColumnsStep") as Styles
 
   return (
@@ -35,7 +35,7 @@ export const ColumnGrid = <T extends string>({
         <Flex
           flex={1}
           display="grid"
-          gridTemplateRows="auto auto auto 1fr"
+          gridTemplateRows={specialPfMatchingMode ? "auto auto 1rem auto" : "auto auto auto 1fr"}
           gridTemplateColumns={`0.75rem repeat(${columns.length}, minmax(18rem, auto)) 0.75rem`}
         >
           <Box gridColumn={`1/${columns.length + 3}`}>
